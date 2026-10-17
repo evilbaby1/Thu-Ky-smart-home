@@ -25,13 +25,14 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Cài Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Chấp nhận license + cài platform 34
+      - name: Cấu hình Android SDK (dùng SDK có sẵn của runner)
         run: |
-          yes | sdkmanager --licenses > /dev/null 2>&1 || true
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" > /dev/null || true
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          if command -v sdkmanager >/dev/null 2>&1; then
+            yes | sdkmanager --licenses > /dev/null 2>&1 || true
+            sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" > /dev/null 2>&1 || true
+          fi
 
       - name: Cài dependencies
         run: npm ci
