@@ -1,0 +1,31 @@
+{
+  "name": "appsmart-home",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Thư Ký — Vietnamese voice smart-home console for Home Assistant (landscape PWA)",
+  "scripts": {
+    "dev": "vite",
+    "dev:lan": "vite --host 0.0.0.0 --port 5173",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 5173",
+    "pc": "vite preview --host 0.0.0.0 --port 5173",
+    "lan": "vite preview --host 0.0.0.0 --port 5173",
+    "cap:sync": "cap sync android",
+    "cap:open": "cap open android",
+    "apk:debug": "cd android && gradlew.bat assembleDebug",
+    "apk:release": "cd android && gradlew.bat assembleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/preferences": "^6.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0",
+    "playwright-core": "^1.63.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.6",
+    "vite-plugin-pwa": "^0.21.1"
+  }
+}

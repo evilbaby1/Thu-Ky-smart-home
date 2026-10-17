@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0B1220"/>
+  <rect x="8" y="8" width="48" height="48" rx="12" fill="url(#g)"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64">
+      <stop stop-color="#E4B363"/>
+      <stop offset="1" stop-color="#C9924A"/>
+    </linearGradient>
+  </defs>
+  <text x="32" y="40" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="700" fill="#0B1220">TK</text>
+</svg>

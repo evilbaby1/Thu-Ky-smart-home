@@ -1,0 +1,21 @@
+# deps / build output
+node_modules/
+dist/
+output/
+.chrome-thuky/
+.playwright-cli/
+
+# android build artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+*.apk
+*.aab
+
+# env / editor
+.env
+.env.local
+.DS_Store
+Thumbs.db

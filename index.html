@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="theme-color" content="#070b14" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="Thư Ký — điều khiển nhà thông minh Home Assistant bằng giọng nói tiếng Việt" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Thư Ký — Smart Home</title>
+  </head>
+  <body data-layout="auto">
+    <div class="bg-mesh" aria-hidden="true"></div>
+    <div id="app">
+      <!-- HEADER -->
+      <header class="header">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"><span>TK</span></div>
+          <div class="brand-text">
+            <div class="brand-name">Thư Ký</div>
+            <div class="brand-sub">Smart Home Console</div>
+          </div>
+        </div>
+        <div class="header-center">
+          <div class="clock-block">
+            <div id="clock-time" class="clock-time">--:--</div>
+            <div id="clock-date" class="clock-date">—</div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="layout-switch" role="group" aria-label="Chế độ giao diện">
+            <button id="btn-layout-portrait" class="layout-btn" title="Giao diện đứng (điện thoại dọc)" aria-label="Giao diện đứng">📱</button>
+            <button id="btn-layout-auto" class="layout-btn active" title="Tự động theo màn hình" aria-label="Tự động">✨</button>
+            <button id="btn-layout-landscape" class="layout-btn" title="Giao diện ngang (tablet / panel treo tường)" aria-label="Giao diện ngang">🖥️</button>
+          </div>
+          <div id="weather-chip" class="weather-chip">
+            <span class="weather-icon">—</span>
+            <span class="weather-temp">--°</span>
+            <span class="weather-desc">đang tải</span>
+          </div>
+          <div id="ha-status" class="ha-status" data-state="disconnected">
+            <span class="ha-dot"></span>
+            <span class="ha-label">HA</span>
+          </div>
+          <button id="btn-settings" class="icon-btn" title="Cài đặt" aria-label="Cài đặt">⚙</button>
+        </div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="main">
+        <section class="stage">
+          <nav class="tabs" role="tablist" aria-label="Chức năng chính">
+            <button class="tab active" data-tab="lunar" role="tab"><span class="tab-icon">📿</span><span>Vạn Niên</span></button>
+            <button class="tab" data-tab="devices" role="tab"><span class="tab-icon">🏠</span><span>Thiết bị</span></button>
+            <button class="tab" data-tab="weather" role="tab"><span class="tab-icon">🌦️</span><span>Thời Tiết</span></button>
+            <button class="tab" data-tab="tides" role="tab"><span class="tab-icon">🌊</span><span>Triều Cường</span></button>
+            <button class="tab" data-tab="fortune" role="tab"><span class="tab-icon">🔮</span><span>Bói Toán</span></button>
+          </nav>
+          <div id="stage-content" class="stage-content"></div>
+        </section>
+      </main>
+
+      <!-- VOICE BAR -->
+      <footer class="voice-bar">
+        <button id="btn-mic" class="mic-btn" aria-label="Bật mic">
+          <span class="mic-ring"></span>
+          <span class="mic-core">🎤</span>
+        </button>
+        <div class="voice-meta">
+          <div id="voice-status" class="voice-status">Chạm mic hoặc gọi “Thư Ký ơi”</div>
+          <div id="voice-transcript" class="voice-transcript"></div>
+        </div>
+        <div class="wake-chip">
+          <span class="wake-dot"></span>
+          <span id="wake-label">Wake: Thư Ký ơi</span>
+        </div>
+      </footer>
+
+      <!-- SETTINGS DRAWER -->
+      <div id="settings-backdrop" class="backdrop hidden"></div>
+      <aside id="settings-drawer" class="settings-drawer" aria-hidden="true">
+        <div class="settings-head">
+          <h2>Cài đặt</h2>
+          <button id="btn-close-settings" class="icon-btn">✕</button>
+        </div>
+        <form id="settings-form" class="settings-form">
+          <label>
+            Home Assistant URL
+            <input id="cfg-ha-url" type="url" placeholder="http://192.168.1.13:8123" autocomplete="off" />
+          </label>
+          <label>
+            Long-Lived Access Token
+            <input id="cfg-ha-token" type="password" placeholder="eyJhbGciOi..." autocomplete="off" />
+          </label>
+          <label>
+            Kích hoạt giọng nói
+            <input id="cfg-wake-phrase" type="text" placeholder="Thư Ký ơi" />
+          </label>
+          <label class="check-row">
+            <input id="cfg-voice-reply" type="checkbox" checked />
+            Phản hồi bằng giọng nói
+          </label>
+          <label>
+            Tên gọi của bạn (xưng hô)
+            <input id="cfg-owner-name" type="text" placeholder="anh / chị / bạn" />
+          </label>
+          <div class="settings-actions">
+            <button type="submit" class="primary-btn">Lưu</button>
+            <button type="button" id="btn-test-ha" class="ghost-btn">Test kết nối</button>
+          </div>
+          <p id="settings-msg" class="settings-msg"></p>
+        </form>
+        <div class="settings-help">
+          <h3>Câu lệnh mẫu</h3>
+          <ul>
+            <li>Thư Ký ơi… bật đèn phòng khách</li>
+            <li>Thư Ký ơi… tắt tất cả đèn</li>
+            <li>Thư Ký ơi… bật máy lạnh</li>
+            <li>Thư Ký ơi… thời tiết hôm nay</li>
+            <li>Thư Ký ơi… hôm nay ngày bao nhiêu</li>
+            <li>Thư Ký ơi… xem bói hôm nay</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

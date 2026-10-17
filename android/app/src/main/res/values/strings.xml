@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Thư Ky</string>
+    <string name="title_activity_main">Thư Ky</string>
+    <string name="package_name">com.appsmarthome.thuky</string>
+    <string name="custom_url_scheme">com.appsmarthome.thuky</string>
+</resources>

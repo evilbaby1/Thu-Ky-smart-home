@@ -1,0 +1,55 @@
+name: Build APK
+
+# Chạy tay ở tab Actions, hoặc tự chạy mỗi khi push lên main/master
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v4
+
+      - name: Cài Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Cài JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Cài Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Chấp nhận license + cài platform 34
+        run: |
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" > /dev/null || true
+
+      - name: Cài dependencies
+        run: npm ci
+
+      - name: Build web + sync vào Android
+        run: |
+          npm run build
+          npx cap sync android
+
+      - name: Đóng gói APK (debug)
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: thu-ky-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
